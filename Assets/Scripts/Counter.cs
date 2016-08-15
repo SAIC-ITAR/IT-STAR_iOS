@@ -7,7 +7,7 @@ public class Counter : MonoBehaviour
 	// Use this for initialization
 	void Start ()
 	{
-		waitTime = 100;
+		waitTime = 200;
 	}
 	
 	// Update is called once per frame

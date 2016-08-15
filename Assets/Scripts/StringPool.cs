@@ -30,7 +30,7 @@ public class StringPool : MonoBehaviour
 		new string[] {
 			"The Hard Drive is a nonvolatile memory hardware that permanently stores and retrieves information without the need for a constant power source.",
 			"Hard Disks store information by changing the magnetization of small sections of the disk, which are then interpreted as 0’s or 1’s.",
-			"All personal computers have a Hard Drive and use it to store files for the operating system and software that runs on the computer.",
+			"All personal computers have a Hard Drive and use it to store files for the operating system and the software that runs on the computer.",
 			"Flashing is the process of wiping data off of a hard disk.",
 			"The Hard Drive is a fragile component which can be damaged if dropped.",
 			"The Hard Drive has an operating temperature of 0 to 60 º C and a non-operating temperature of 40 to 65 º C."
@@ -65,12 +65,11 @@ public class StringPool : MonoBehaviour
 		},
 
 		new string[] { "1. Locate the fan in right-center section of the laptop.",
-			"2. Remove wire connecting fan to mother board.\n- Remove the four pin patch chord.", 
-			"3. Remove the five screws attaching the fan to the laptop.",
-			"4. Lift the near side of the assembly and pull up and towards the near side.",
-			"5. Apply new thermal paste to the underside of the heat sink.",
-			"6. Insert the new fan assembly.",
-			"7. Replace the five screws and the wire."
+			"2. Remove the wire, the four pin patch chord, and the five screws", 
+			"3. Lift the fan and heat sink upwards.",
+			"4. Apply new thermal paste to the underside of the heat sink.",
+			"5. Insert the new fan assembly.",
+			"6. Replace the five screws and the wire."
 		},
 
 		new string[] { "1. Locate Hard Drive in bottom right section of the laptop.",
@@ -81,17 +80,15 @@ public class StringPool : MonoBehaviour
 		new string[] { "1. Locate the RAM at the center-bottom section of the laptop.",
 			"2. Press down and out on the tabs directly to the left and right of the RAM card.",
 			"3. Carefully slide RAM card out horizontally.",
-			"4. Firmly push the new RAM card into place until it stops.",
-			"5. Press down on the RAM card until the tabs click."
+			"4. Move the new RAM card into place until it stops.",
+			"5. Ensure that the tabs on the sides both click in place."
 		},
 
 		new string[] { "1. Locate the Wi-Fi Adapter in the upper left of the laptop.",
-			"2. Unplug the white and black wires.",
-			"3. Remove the screw on the bottom right of the Wi-Fi Adapter.",
-			"4. Lift and pull the Wi-Fi Adapter up and at an angle.",
-			"5. Firmly push the new Wi-Fi Adapter into place until it stops.",
-			"6. Tighten the screw.",
-			"7. Plug the white cable to the right side of the Wi-Fi Adapter and the black on the left."
+			"2. Unplug the white and black wires, and remove the screw.",
+			"3. Lift and pull the Wi-Fi Adapter up and at an angle.",
+			"4. Firmly push the new Wi-Fi Adapter into place until it stops.",
+			"5. Replace the screw and plug wires back in."
 		}
 	};
 

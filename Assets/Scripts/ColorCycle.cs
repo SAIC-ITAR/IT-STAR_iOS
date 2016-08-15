@@ -20,46 +20,46 @@ public class ColorCycle : MonoBehaviour
 	}
 	
 	// Update is called once per frame
-	void Update ()
+	void FixedUpdate ()
 	{
 		switch (stage) {
 		case 0:
-			g += 0.005f;
+			g += 0.03f;
 			if (g >= 1.0f) {
 				g = 1.0f;
 				stage++;
 			}
 			break;
 		case 1:
-			r -= 0.005f;
+			r -= 0.03f;
 			if (r <= 0.0f) {
 				r = 0.0f;
 				stage++;
 			}
 			break;
 		case 2:
-			b += 0.005f;
+			b += 0.03f;
 			if (b >= 1.0f) {
 				b = 1.0f;
 				stage++;
 			}
 			break;
 		case 3:
-			g -= 0.005f;
+			g -= 0.03f;
 			if (g <= 0.0f) {
 				g = 0.0f;
 				stage++;
 			}
 			break;
 		case 4:
-			r += 0.005f;
+			r += 0.03f;
 			if (r >= 1.0f) {
 				r = 1.0f;
 				stage++;
 			}
 			break;
 		case 5:
-			b -= 0.005f;
+			b -= 0.03f;
 			if (b <= 0.0f) {
 				b = 0.0f;
 				stage = 0;

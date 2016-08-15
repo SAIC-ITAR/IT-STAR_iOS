@@ -19,8 +19,11 @@ public class ButtonControl : MonoBehaviour
 	public GameObject optionsPanel;//the panel that appears when the options gears in the upper left are pressed
 	public GameObject userGuidePanel;//the panel that appears when the user guide button is pressed under the options gear
 	public GameObject ITtext; //IT-Star text
+	public GameObject menuOccluder; //occludes objects behind the options menu
+	public UIController uiController;
+	public GameObject preparationSteps;
 
-	public void removeFirstMenu () {//called when the assessment button is pressed - gets rid of all buttons on screen and brings up the roght arrow
+	public void removeFirstMenu () {//called when the assessment button is pressed - gets rid of all buttons on screen and brings up the right arrow
 		about.SetActive (false); 
 		repair.SetActive (false);
 		test.SetActive (false);
@@ -55,11 +58,15 @@ public class ButtonControl : MonoBehaviour
 		ITtext.SetActive (false);
 	}
 
-	public void optionsMenuOn (bool b) { //toggels the options menu
+	public void optionsMenuOn (bool b) { //toggles the options menu
 		optionsPanel.SetActive (b);
+		menuOccluder.SetActive(b);
+		if (preparationSteps.activeInHierarchy == true) {
+			uiController.screwOn();
+		}
 	}
 
-	public void showAnswers (int w, bool b) { //toggels the answers, which appear between questions
+	public void showAnswers (int w, bool b) { //toggles the answers, which appear between questions
 		for (int i = 0; i < w; i++) {
 			answer [i].SetActive (b);
 		}
@@ -71,11 +78,11 @@ public class ButtonControl : MonoBehaviour
 		}
 	}
 
-	public void userGuideOn (bool b) { //toggels the user guide
+	public void userGuideOn (bool b) { //toggles the user guide
 		userGuidePanel.SetActive (b);
 	}
 
-	public void nextOn (bool b) { //toggels the next button, which appears after an answer is submitted in order to go the the next question
+	public void nextOn (bool b) { //toggles the next button, which appears after an answer is submitted in order to go the the next question
 		next.SetActive (b);
 	}
 
@@ -92,4 +99,8 @@ public class ButtonControl : MonoBehaviour
 	public void upOn (bool b) {//toggles up arrow button, which will appear whenever selected tect box is not at the top.
 		up.SetActive (b);
 	}
-}
+
+
+	}
+
+

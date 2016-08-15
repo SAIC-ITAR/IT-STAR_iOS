@@ -29,6 +29,17 @@ public class TestController : MonoBehaviour
 	public AudioClip fail; 
 	public AudioClip fireworks; 
 	private bool allcorrect = true; 
+	public int scoreHolder = -1;
+	public int hdScore = -1;
+	public int cdScore = -1;
+	public int ramScore = -1;
+	public int batteryScore = -1;
+	public int wifiScore = -1;
+	public int fanScore = -1;
+	public TouchController touchController;
+
+
+
 
 	void Awake () {
 		for (int i = 0; i < scores.Length; i++) {
@@ -167,13 +178,12 @@ public class TestController : MonoBehaviour
 						audioplay=GameObject.Find("New Test Holder").GetComponent<AudioSource>();
 						audioplay.PlayOneShot(wrong);
 						allcorrect = false; 
-						Debug.Log ("You suck");
+
 
 					}
 					if (allcorrect == true) {
 						audioplay = GameObject.Find ("New Test Holder").GetComponent<AudioSource> ();
 						audioplay.PlayOneShot (pass);
-						Debug.Log ("what");
 					}
 				}
 				qNumber++;
@@ -198,7 +208,7 @@ public class TestController : MonoBehaviour
 			} else if (qNumber < 5) {//Is it a Repair question
 
 				question.color = Color.white;
-				question.text = "Select and reorder the steps.";
+				question.text = "Select and use arrows to reorder the steps.";
 
 				string temp;
 				int rand;
@@ -237,43 +247,217 @@ public class TestController : MonoBehaviour
 					question.text = "You Failed!\nYour score is " + scores[modelNum] + "/" + (4 + repairAnswer.Length) + ".\nYou need to retake the test.";
 					Glow [modelNum].material = DimRedMaterial;
 					audioplay=GameObject.Find("New Test Holder").GetComponent<AudioSource>();
-					audioplay.PlayOneShot(fail);
+					audioplay.PlayOneShot(wrong);
 				}
 			}
 		}
 	}
 	public void dim(int TCMenu) {
 		for (int i = 1; i < Glow.Length; i++) {
-			if (i != TCMenu) {
-				if (scores [i] == -1) {
-					Glow [i].material = DimBlueMaterial;
-				} else if (scores [i] == 4 + StringPool.RFacts [i].Length) {
+
+			if (i == TCMenu){
+					switch (i) {
+					case 1:
+						if (batteryScore == 4 + StringPool.RFacts [i].Length) {
+							Glow [i].material = GreenMaterial;
+						} else if (batteryScore == -1) {
+							Glow [i].material = BlueMaterial;
+						} else {
+							Glow [i].material = RedMaterial;
+
+						}
+						break;
+					case 2:
+						if (cdScore == 4 + StringPool.RFacts [i].Length) {
+							Glow [i].material = GreenMaterial;
+						} else if (cdScore == -1) {
+							Glow [i].material = BlueMaterial;
+						} else {
+							Glow [i].material = RedMaterial;
+
+						}
+						break;
+					case 3:
+						if (fanScore == 4 + StringPool.RFacts [i].Length) {
+							Glow [i].material = GreenMaterial;
+						} else if (fanScore == -1) {
+							Glow [i].material = BlueMaterial;
+						} else {
+							Glow [i].material = RedMaterial;
+
+						}
+						break;
+					case 4:
+						if (hdScore == 4 + StringPool.RFacts [i].Length) {
+							Glow [i].material = GreenMaterial;
+						} else if (hdScore == -1) {
+							Glow [i].material = BlueMaterial;
+						} else {
+							Glow [i].material = RedMaterial;
+
+						}
+						break;
+					case 5:
+						if (ramScore == 4 + StringPool.RFacts [i].Length) {
+							Glow [i].material = GreenMaterial;
+						} else if (ramScore == -1) {
+							Glow [i].material = BlueMaterial;
+						} else {
+							Glow [i].material = RedMaterial;
+
+						}
+						break;
+					case 6:
+						if (wifiScore == 4 + StringPool.RFacts [i].Length) {
+							Glow [i].material = GreenMaterial;
+						} else if (wifiScore == -1) {
+							Glow [i].material = BlueMaterial;
+						} else {
+							Glow [i].material = RedMaterial;
+
+						}
+						break;
+					}
+				}
+			if (i != TCMenu){
+			switch (i){
+			case 1:
+				if (batteryScore == 4 + StringPool.RFacts [i].Length) {
 					Glow [i].material = DimGreenMaterial;
+				} else if (batteryScore == -1) {
+					Glow [i].material = DimBlueMaterial;
 				} else {
 					Glow [i].material = DimRedMaterial;
+
 				}
-			} else {
-				if (scores [i] == -1) {
-					Glow [i].material = BlueMaterial;
-				} else if (scores [i] == 4 + StringPool.RFacts [i].Length) {
-					Glow [i].material = GreenMaterial;
+						break;
+			case 2:
+				if (cdScore == 4 + StringPool.RFacts [i].Length) {
+					Glow [i].material = DimGreenMaterial;
+				} else if (cdScore == -1) {
+					Glow [i].material = DimBlueMaterial;
 				} else {
-					Glow [i].material = RedMaterial;
+					Glow [i].material = DimRedMaterial;
+
 				}
+				break;
+			case 3:
+				if (fanScore == 4 + StringPool.RFacts [i].Length) {
+					Glow [i].material = DimGreenMaterial;
+				} else if (fanScore == -1) {
+					Glow [i].material = DimBlueMaterial;
+				} else {
+					Glow [i].material = DimRedMaterial;
+
+				}
+				break;
+			case 4:
+				if (hdScore == 4 + StringPool.RFacts [i].Length) {
+					Glow [i].material = DimGreenMaterial;
+				} else if (hdScore == -1) {
+					Glow [i].material = DimBlueMaterial;
+				} else {
+					Glow [i].material = DimRedMaterial;
+
+				}
+				break;
+			case 5:
+				if (ramScore == 4 + StringPool.RFacts [i].Length) {
+					Glow [i].material = DimGreenMaterial;
+				} else if (ramScore == -1) {
+					Glow [i].material = DimBlueMaterial;
+				} else {
+					Glow [i].material = DimRedMaterial;
+
+				}
+				break;
+			case 6:
+				if (wifiScore == 4 + StringPool.RFacts [i].Length) {
+					Glow [i].material = DimGreenMaterial;
+				} else if (wifiScore == -1) {
+					Glow [i].material = DimBlueMaterial;
+				} else {
+					Glow [i].material = DimRedMaterial;
+
+				}
+				break;
 			}
+					}
+
 		}
 	}
 
 	public void undim() {//would go under back button
-		for(int i = 1; i < Glow.Length; i++){
-			if (scores [i] == -1) {
-				Glow [i].material = BlueMaterial;
-			} else if (scores [i] == 4 + StringPool.RFacts [i].Length) {
-				Glow [i].material = GreenMaterial;
-			} else {
-				Glow [i].material = RedMaterial;
+
+		for (int i = 1; i < Glow.Length; i++) {
+
+				switch (i) {
+				case 1:
+					if (batteryScore == 4 + StringPool.RFacts [i].Length) {
+						Glow [i].material = DimGreenMaterial;
+					} else if (batteryScore == -1) {
+						Glow [i].material = DimBlueMaterial;
+					} else {
+						Glow [i].material = DimRedMaterial;
+					Debug.Log ("dim red on battery");
+					}
+					break;
+				case 2:
+					if (cdScore == 4 + StringPool.RFacts [i].Length) {
+						Glow [i].material = DimGreenMaterial;
+					} else if (cdScore == -1) {
+						Glow [i].material = DimBlueMaterial;
+					} else {
+						Glow [i].material = DimRedMaterial;
+
+					}
+					break;
+				case 3:
+					if (fanScore == 4 + StringPool.RFacts [i].Length) {
+						Glow [i].material = DimGreenMaterial;
+					} else if (fanScore == -1) {
+						Glow [i].material = DimBlueMaterial;
+					} else {
+						Glow [i].material = DimRedMaterial;
+
+					}
+					break;
+				case 4:
+					if (hdScore == 4 + StringPool.RFacts [i].Length) {
+						Glow [i].material = DimGreenMaterial;
+					} else if (hdScore == -1) {
+						Glow [i].material = DimBlueMaterial;
+					} else {
+						Glow [i].material = DimRedMaterial;
+
+					}
+					break;
+				case 5:
+					if (ramScore == 4 + StringPool.RFacts [i].Length) {
+						Glow [i].material = DimGreenMaterial;
+					} else if (ramScore == -1) {
+						Glow [i].material = DimBlueMaterial;
+					} else {
+						Glow [i].material = DimRedMaterial;
+
+					}
+					break;
+				case 6:
+					if (wifiScore == 4 + StringPool.RFacts [i].Length) {
+						Glow [i].material = DimGreenMaterial;
+					} else if (wifiScore == -1) {
+						Glow [i].material = DimBlueMaterial;
+					} else {
+						Glow [i].material = DimRedMaterial;
+
+					}
+					break;
+				}
+
+
+
 			}
 		}
-	}
-}
+
+		}
 
