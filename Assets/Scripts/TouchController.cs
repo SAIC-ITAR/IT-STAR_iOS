@@ -22,7 +22,8 @@ public class TouchController : MonoBehaviour {
 	public int justStart;
 	public Image preparationButton;
 	public TestController testController;
-
+	public GameObject title;
+	public AudioClip Click;
 
 	void Awake (){
 
@@ -39,6 +40,20 @@ public class TouchController : MonoBehaviour {
 		anim2.SetBool ("instructionsUp", true);
 		uiController.smallMenuOcc.SetActive (true);
 		testController.dim (menuOn);
+		StartCoroutine (TitleActive ());
+		sound.PlayOneShot (Click);
+
+		if (uiController.fireworksBool) {
+			uiController.closeCongrats ();
+		}
+	
+	}
+
+	public IEnumerator TitleActive(){
+		yield return new WaitForSeconds (.75f);
+		if ((menuOn != 0) && (FirstMenu == true)) {
+			title.SetActive (true);
+		}
 	}
 
 
@@ -54,22 +69,22 @@ public class TouchController : MonoBehaviour {
 
 		if (!userGuide.activeSelf && !anim1.GetBool ("testOn")) {
 
-			if (Input.GetKeyDown ("q")) {
+			if ((Input.GetKeyDown ("q")) && (uiController.fireworksBool == false)) {
 				menuOn = 1;
 				onTap ();
-			} else if (Input.GetKeyDown ("w")) {
+			} else if ((Input.GetKeyDown ("w")) && (uiController.fireworksBool == false)) {
 				menuOn = 2;
 				onTap ();
-			} else if (Input.GetKeyDown ("e")) {
+			} else if ((Input.GetKeyDown ("e")) && (uiController.fireworksBool == false)) {
 				menuOn = 3;
 				onTap ();
-			} else if (Input.GetKeyDown ("r")) {
+			} else if ((Input.GetKeyDown ("r")) && (uiController.fireworksBool == false)) {
 				menuOn = 4;
 				onTap ();
-			} else if (Input.GetKeyDown ("t")) {
+			} else if ((Input.GetKeyDown ("t")) && (uiController.fireworksBool == false)) {
 				menuOn = 5;
 				onTap ();
-			} else if (Input.GetKeyDown ("y")) {
+			} else if ((Input.GetKeyDown ("y")) && (uiController.fireworksBool == false)) {
 				menuOn = 6;
 				onTap ();
 			}
@@ -90,24 +105,24 @@ public class TouchController : MonoBehaviour {
 				if (!userGuide.activeSelf && !anim1.GetBool ("testOn")) {
 
 					//touch hard drive
-					if ((hit.rigidbody.gameObject.name == "HD_Raycast target")) {
+					if ((hit.rigidbody.gameObject.name == "HD_Raycast target") && (uiController.fireworksBool == false)) {
 						menuOn = 4;
 						onTap ();
 					}
 					//touch ram 
-					else if ((hit.rigidbody.gameObject.name == "RAM_Raycast target")) {
+					else if ((hit.rigidbody.gameObject.name == "RAM_Raycast target") && (uiController.fireworksBool == false)) {
 						menuOn = 5;
 						onTap ();
-					} else if ((hit.rigidbody.gameObject.name == "WiFi_Raycast target")) {
+					} else if ((hit.rigidbody.gameObject.name == "WiFi_Raycast target") && (uiController.fireworksBool == false)) {
 						menuOn = 6;
 						onTap ();
-					} else if ((hit.rigidbody.gameObject.name == "Battery_Raycast target")) {
+					} else if ((hit.rigidbody.gameObject.name == "Battery_Raycast target") && (uiController.fireworksBool == false)) {
 						menuOn = 1;
 						onTap ();
-					} else if ((hit.rigidbody.gameObject.name == "CD_Raycast target")) {
+					} else if ((hit.rigidbody.gameObject.name == "CD_Raycast target") && (uiController.fireworksBool == false)) {
 						menuOn = 2;
 						onTap ();
-					} else if ((hit.rigidbody.gameObject.name == "Fan_Raycast target")) {
+					} else if ((hit.rigidbody.gameObject.name == "Fan_Raycast target") && (uiController.fireworksBool == false)) {
 						menuOn = 3;
 						onTap ();
 					}

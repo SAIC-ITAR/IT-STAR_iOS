@@ -37,8 +37,8 @@ public class TestController : MonoBehaviour
 	public int wifiScore = -1;
 	public int fanScore = -1;
 	public TouchController touchController;
-
-
+	public bool moved;
+	public bool wrongFlag;
 
 
 	void Awake () {
@@ -67,10 +67,14 @@ public class TestController : MonoBehaviour
 			TestText [i].text = StringPool.TFacts [i+1, modelNum, 0];
 		}
 
-		buttonControl.testButtons ();//Display the test elements
+
+		StartCoroutine(buttonControl.testButtons ());//Display the test elements
+
+
 	}
 
 	public void up () {//called by up arrow button during repair section
+		moved = true;
 		string temp = "";
 
 		temp = repairAnswer [selected-1];//swap the selected step for the one above it
@@ -95,6 +99,7 @@ public class TestController : MonoBehaviour
 
 	public void down () {//It's like up() but backwards
 		string temp = "";
+		moved = true;
 
 		temp = repairAnswer [selected-1];
 		repairAnswer [selected-1] = repairAnswer [selected];
@@ -142,8 +147,32 @@ public class TestController : MonoBehaviour
 		}
 	}
 
+
+	public void Update(){
+		if (Input.GetKeyDown ("m")) {
+			hdScore = 7;
+		}
+		if (Input.GetKeyDown ("n")) {
+			cdScore = 8;
+		}
+		if (Input.GetKeyDown ("b")) {
+			ramScore = 9;
+		}
+		if (Input.GetKeyDown ("v")) {
+			batteryScore = 8;
+		}
+		if (Input.GetKeyDown ("c")) {
+			wifiScore = 9;
+		}
+		if (Input.GetKeyDown ("x")) {
+			fanScore = 10;
+		}
+	}
+
+
 	public void next() {//Called when the next button is tapped
-		
+		scoreHolder = scores[modelNum];
+
 		if (selected != 12) {//Checks if an answer is being submitted, 12 means that no answer button is selected and a new question needs to be loaded, otherwise the selected answer is checked
 			if (qNumber < 4) {//Checks if the test is in the About section, questions 0-3 are About, 4 is Repair
 					buttonControl.showAnswers (7, false);//Hide and reset answer buttons
@@ -160,8 +189,8 @@ public class TestController : MonoBehaviour
 					} else {
 						question.color = Color.red;//display a incorrrect message and the correct answer in red
 						question.text = "Incorrect. The correct answer is:\n" + StringPool.TFacts [StringPool.TAnswers [modelNum, qNumber], modelNum, qNumber];
-					audioplay=GameObject.Find("New Test Holder").GetComponent<AudioSource>();
-					audioplay.PlayOneShot(wrong);
+						audioplay = GameObject.Find ("New Test Holder").GetComponent<AudioSource> ();
+						audioplay.PlayOneShot (wrong);
 					}
 					qNumber++;//Advance the test and indicate no answer is selected
 					selected = 12;
@@ -173,11 +202,18 @@ public class TestController : MonoBehaviour
 						scores [modelNum]++;
 						TestText [i].color = Color.green;
 						Debug.Log ("You rock");
+
 					} else {
 						TestText [i].color = Color.red;
-						audioplay=GameObject.Find("New Test Holder").GetComponent<AudioSource>();
-						audioplay.PlayOneShot(wrong);
 						allcorrect = false; 
+						if (wrongFlag == false) {
+							wrongFlag = true;
+							audioplay = GameObject.Find ("New Test Holder").GetComponent<AudioSource> ();
+							audioplay.PlayOneShot (wrong);
+							Debug.Log ("play wrong");
+						}
+
+						
 
 
 					}
@@ -210,25 +246,17 @@ public class TestController : MonoBehaviour
 				question.color = Color.white;
 				question.text = "Select and use arrows to reorder the steps.";
 
-				string temp;
-				int rand;
-
-				for (int i = 0; i < repairAnswer.Length; i++) {
-					rand = Random.Range (i, repairAnswer.Length);
-						temp = repairAnswer [i];
-						repairAnswer [i] = repairAnswer [rand];
-						repairAnswer [rand] = temp;
-
+				if (moved == false) {
+					StepOrder ();
 				}
 
-				for (int i = 0; i < repairAnswer.Length; i++) {
-					TestText [i].text = repairAnswer [i].Substring (3);
-				}
+
 				buttonControl.showAnswers (repairAnswer.Length, true);
 				buttonControl.downOn (true);
 				buttonControl.upOn (true);
 
 			} else {//Is it a results screen
+				moved = false;
 				buttonControl.showAnswers (7, false);
 				buttonControl.interactAnswers (true);
 				buttonControl.nextOn (false);
@@ -242,16 +270,88 @@ public class TestController : MonoBehaviour
 					uiController.particlesystem.Play ();
 					audioplay=GameObject.Find("New Test Holder").GetComponent<AudioSource>();
 					audioplay.PlayOneShot(fireworks);
+
+					switch (modelNum){
+					case 1:
+						batteryScore = scoreHolder;
+						break;
+					case 2:
+						cdScore = scoreHolder;
+						break;
+					case 3:
+						fanScore = scoreHolder;
+						break;
+					case 4:
+						hdScore = scoreHolder;
+						break;
+					case 5:
+						ramScore = scoreHolder;
+						break;
+					case 6:
+						wifiScore = scoreHolder;
+						break;
+
+					}
+					if ((hdScore == 7) && (cdScore == 8) && (ramScore == 9) && (batteryScore == 8) && (wifiScore == 9) && (fanScore == 10)) {
+						uiController.fireworksBool = true;
+					}
+
 				} else {
 					question.color = Color.red;
 					question.text = "You Failed!\nYour score is " + scores[modelNum] + "/" + (4 + repairAnswer.Length) + ".\nYou need to retake the test.";
 					Glow [modelNum].material = DimRedMaterial;
 					audioplay=GameObject.Find("New Test Holder").GetComponent<AudioSource>();
-					audioplay.PlayOneShot(wrong);
+					//audioplay.PlayOneShot(wrong);
+					switch (modelNum){
+					case 1:
+						batteryScore = scoreHolder;
+						break;
+					case 2:
+						cdScore = scoreHolder;
+						break;
+					case 3:
+						fanScore = scoreHolder;
+						break;
+					case 4:
+						hdScore = scoreHolder;
+						break;
+					case 5:
+						ramScore = scoreHolder;
+						break;
+					case 6:
+						wifiScore = scoreHolder;
+						break;
+
+					}
 				}
 			}
 		}
 	}
+
+	public void StepOrder(){
+		string temp;
+		int rand;
+		int rand2;
+		moved = true;
+			for (int i = 0; i < repairAnswer.Length; i++) {
+				rand = Random.Range (i, repairAnswer.Length);
+				rand2 = Random.Range (2, repairAnswer.Length);
+
+				Debug.Log (rand2);
+				temp = repairAnswer [i];
+				repairAnswer [i] = repairAnswer [rand2];
+				repairAnswer [rand2] = temp;
+
+
+		}
+		for (int i = 0; i < repairAnswer.Length; i++) {
+			TestText [i].text = repairAnswer [i].Substring (3);
+		}
+
+
+}
+
+
 	public void dim(int TCMenu) {
 		for (int i = 1; i < Glow.Length; i++) {
 

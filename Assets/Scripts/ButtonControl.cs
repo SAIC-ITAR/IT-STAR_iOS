@@ -22,6 +22,8 @@ public class ButtonControl : MonoBehaviour
 	public GameObject menuOccluder; //occludes objects behind the options menu
 	public UIController uiController;
 	public GameObject preparationSteps;
+	public int testCounter;
+	public TouchController touchController;
 
 	public void removeFirstMenu () {//called when the assessment button is pressed - gets rid of all buttons on screen and brings up the right arrow
 		about.SetActive (false); 
@@ -42,20 +44,25 @@ public class ButtonControl : MonoBehaviour
 		question.SetActive (false);
 		up.SetActive (false);
 		down.SetActive (false);
-		ITtext.SetActive (true);
 		interactAnswers (true);
 	}
 
-	public void testButtons () { // called when the assessment button is pressed and sets up the buttons for testing
+	public IEnumerator testButtons () { // called when the assessment button is pressed and sets up the buttons for testing
 		about.SetActive (false);
 		repair.SetActive (false);
 		test.SetActive (false);
 		left.SetActive (false);
 		right.SetActive (false);
-		next.SetActive (true);
-		showAnswers (4, true);
-		question.SetActive (true);
 		ITtext.SetActive (false);
+		yield return new WaitForSeconds (.5f);
+
+		if (touchController.FirstMenu == false){
+			next.SetActive (true);
+			showAnswers (4, true);
+			question.SetActive (true);
+
+		}
+	
 	}
 
 	public void optionsMenuOn (bool b) { //toggles the options menu

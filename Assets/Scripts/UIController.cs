@@ -32,6 +32,7 @@ public class UIController : MonoBehaviour {
 	public AudioClip abouton;
 	public AudioClip repair;
 	public AudioClip assessment; 
+	public AudioClip click;
 	public ParticleSystem particlesystem;
 	public ParticleSystem particlesystem1;
 	public ParticleSystem particlesystem2;
@@ -49,6 +50,14 @@ public class UIController : MonoBehaviour {
 	public Collider batteryRaycast; 
 	public GameObject fullOccluder;
 	public bool occluderOn = false;
+	public AudioClip fireworks; 
+	public bool fireworksBool;
+	public bool congratsCheck;
+	public int occludeCounter;
+	public GameObject exitCheck;
+	public GameObject menuOccluder;
+	public GameObject fullOccluderBegin;
+
 
 	// Use this for initialization
 	void Start () {
@@ -73,18 +82,64 @@ public class UIController : MonoBehaviour {
 
 	//------------------------------------------Button fuctions--------------------------------------------------------------------------
 
+	public void Fireworks(){
+		touchController.title.SetActive (false);
+		fullOccluder.SetActive (true);
 
-	public void Quit(){
+		anim1.SetBool ("panelRight", true);
+		anim2.SetBool ("instructionsUp", false);
+		testController.Glow [touchController.menuOn].enabled = true;
+		testController.undim ();
+		touchController.menuOn = 0;
+		smallMenuOcc.SetActive (false);
+
+		particlesystem.Play ();
+		particlesystem1.Play ();
+		particlesystem2.Play ();
+		particlesystem3.Play ();
+		particlesystem4.Play ();
+		congrats.SetActive (true);
+		close.SetActive (true);
+		anim1.SetBool ("panelRight", true);
+		anim2.SetBool ("instructionsUp", false);
+		testController.undim ();
+		touchController.menuOn = 0;
+		smallMenuOcc.SetActive (false);
+		soundPlayer.PlayOneShot(fireworks);
+		fireworksBool = true;
+		congratsCheck = true;
+		StartCoroutine(FireworksSounds());
+	}
+
+
+	public void QuitQuestionOn(){
 		if (buttonControl.userGuidePanel.activeSelf) {
 			buttonControl.userGuideOn (false);
 		} else {
-			Application.Quit ();
+			exitCheck.SetActive (true);
+			fullOccluder.SetActive (true);
+			menuOccluder.SetActive (true);
 		}
+	}
+
+	public void QuitQuestionOff(){
+		exitCheck.SetActive(false);
+		fullOccluder.SetActive (false);
+		menuOccluder.SetActive (false);
+
+	}
+
+
+	public void Quit(){
+		
+			Application.Quit ();
+		
 	}
 		
 	public void AboutOn(){
 		if (touchController.menuOn != 0){
-			
+			anim1.SetBool ("panelSmall", true);
+
 		mainMarkerCanvas.GetComponent<Canvas> ().enabled = true;
 		infoText.enabled = true;
 		//preparationText.enabled = false;
@@ -102,7 +157,7 @@ public class UIController : MonoBehaviour {
 	//tutorial instructions
 	public void RepairOn(){
 		if (touchController.menuOn != 0){
-			
+			anim1.SetBool ("panelSmall", true);
 		repairCounter = 1;
 		mainMarkerCanvas.GetComponent<Canvas> ().enabled = true;
 		infoText.enabled = true;
@@ -112,19 +167,11 @@ public class UIController : MonoBehaviour {
 		Facts = StringPool.RFacts;
 		mainMarkerCanvas.GetComponentInChildren<Text> ().text = Facts [touchController.menuOn][0];
 		factIndex = 0;
-		soundPlayer.clip =repair;
+		soundPlayer.clip = abouton;
 		soundPlayer.Play ();
 		buttonControl.removeFirstMenu ();
 		testController.Glow [touchController.menuOn].enabled = false;
 
-
-		/*touchController.batteryRenderer.enabled = false;
-		touchController.cdRenderer.enabled = false;
-		touchController.fanRenderer.enabled = false;
-		touchController.hdRenderer.enabled = false;
-		touchController.ramRenderer.enabled = false;
-		touchController.wifiRenderer.enabled = false;
-*/
 		for (int i = 1;i < testController.Glow.Length;i++) {
 			NamePlates[i].enabled = false;
 		}
@@ -177,9 +224,10 @@ public class UIController : MonoBehaviour {
 
 
 	public void TestOn () {
+		testController.scoreHolder = 0;
 
 		if (touchController.menuOn != 0){
-		soundPlayer.clip = assessment;
+		soundPlayer.clip = abouton;
 		soundPlayer.Play ();
 		anim1.SetBool ("testOn", true);
 		touchController.FirstMenu = false;
@@ -189,73 +237,50 @@ public class UIController : MonoBehaviour {
 	}
 
 	public void Back(){
-		if (Input.GetKeyDown("f") || (testController.hdScore == 7) && (testController.cdScore == 8) && (testController.ramScore == 9) && (testController.batteryScore == 8) && (testController.wifiScore == 9) && (testController.fanScore == 10)){
-			particlesystem.Play ();
-			particlesystem1.Play ();
-			particlesystem2.Play ();
-			particlesystem3.Play ();
-			particlesystem4.Play ();
-			congrats.SetActive (true);
-			close.SetActive (true);
-			anim1.SetBool ("panelRight", true);
-			anim2.SetBool ("instructionsUp", false);
-			testController.undim ();
-			touchController.menuOn = 0;
-			smallMenuOcc.SetActive (false);
+		testController.wrongFlag = false;
+		if (fireworksBool == true) {
+		Fireworks ();
 		}
+
+		congratsCheck = false;
+		anim1.SetBool ("panelSmall", false);
+		testController.moved = false;
+
 
 
 		if (touchController.FirstMenu) {
+
+			touchController.title.SetActive (false);
+
 			anim1.SetBool ("panelRight", true);
 			anim2.SetBool ("instructionsUp", false);
 			testController.Glow [touchController.menuOn].enabled = true;
 
 
 			testController.undim ();
-			
-			touchController.menuOn = 0;
-			smallMenuOcc.SetActive (false);
-
-		} else {
-			repairCounter = 0;
 			if (testController.qNumber < 5) {
 
-				testController.scores [testController.modelNum] = testController.scoreHolder;
-			} else {
-				testController.scoreHolder = testController.scores[testController.modelNum];
 
-				switch (testController.modelNum){
-				case 1:
-					testController.batteryScore = testController.scoreHolder;
-					break;
-				case 2:
-					testController.cdScore = testController.scoreHolder;
-					break;
-				case 3:
-					testController.fanScore = testController.scoreHolder;
-					break;
-				case 4:
-					testController.hdScore = testController.scoreHolder;
-					break;
-				case 5:
-					testController.ramScore = testController.scoreHolder;
-					break;
-				case 6:
-					testController.wifiScore = testController.scoreHolder;
-					break;
-
-				}
 
 				testController.scores [testController.modelNum] = -1;
 
 
 			}
-			if (anim1.GetBool ("testOn") && testController.qNumber < 4) {
+			
+			touchController.menuOn = 0;
+			smallMenuOcc.SetActive (false);
+
+		} else {
+			touchController.FirstMenu = true;
+
+			repairCounter = 0;
+
+		/*	if (anim1.GetBool ("testOn") && testController.qNumber < 4) {
 				testController.scores [touchController.menuOn] = -1;
 			}
+			*/
 			anim1.SetBool ("testOn", false);
 			mainMarkerCanvas.GetComponent<Canvas> ().enabled = false;
-			touchController.FirstMenu = true;
 			buttonControl.bringFirstMenu ();
 			testController.Glow [touchController.menuOn].enabled = true;
 			//testController.Glow [touchController.menuOn].material = BlueMaterial;
@@ -291,9 +316,26 @@ public class UIController : MonoBehaviour {
 				break;
 			}
 		}
+		StartCoroutine (touchController.TitleActive ());
+
+	}
+
+
+	public IEnumerator FireworksSounds(){
+		Debug.Log ("fireworks sounds");
+		yield return new WaitForSeconds (.3f);
+		soundPlayer.PlayOneShot(fireworks);
+		yield return new WaitForSeconds (.4f);
+		soundPlayer.PlayOneShot(fireworks);
+		yield return new WaitForSeconds (.3f);
+		soundPlayer.PlayOneShot(fireworks);
+		yield return new WaitForSeconds (.5f);
+		soundPlayer.PlayOneShot(fireworks);
 	}
 
 	public void AudioClick1(){
+		soundPlayer.clip = abouton;
+
 		soundPlayer.Play ();
 	}
 
@@ -310,13 +352,17 @@ public class UIController : MonoBehaviour {
 	}
 
 	public void ScoreReset(){
-		for (int i = 1; i < 7; i++) {
-			testController.Glow [i].material = BlueMaterial;
-			testController.scores [i] = -1;
+		closeCongrats ();
+		testController.hdScore = -1;
+		testController.cdScore = -1;
+		testController.batteryScore = -1;
+		testController.wifiScore = -1;
+		testController.fanScore = -1;
+		testController.ramScore = -1;
+		testController.dim (touchController.menuOn);
+
+
 		}
-	}
-
-
 
 
 	public void screwOn () {
@@ -330,6 +376,10 @@ public class UIController : MonoBehaviour {
 	}
 
 	public void closeCongrats () {
+		fullOccluder.SetActive (false);
+
+		congratsCheck = false;
+		fireworksBool = false;
 		congrats.SetActive (false);
 		close.SetActive (false);
 		for (int i = 1; i < 7; i++) {
@@ -338,15 +388,9 @@ public class UIController : MonoBehaviour {
 	}
 
 	public void trackingVisualsOn (bool b) {
-		/*for (int i = 1;i < testController.Glow.Length;i++) {
-			testController.Glow[i].enabled = b;
-		}
-
-		for (int i = 1;i < testController.Glow.Length;i++) {
-			NamePlates[i].enabled = b;
-		}*/
-		if (b == false) {
-			ARCamera.transform.position = new Vector3 (-3511f, -575f, 564f);
+		
+		if ((b == false) || (Input.GetKeyDown("j"))) {
+			ARCamera.transform.position = new Vector3 (-3230, -530, 560);
 			ARCamera.transform.LookAt (marker.transform);
 			//47, 180, 5
 			hdRaycast.enabled = true;
@@ -360,52 +404,37 @@ public class UIController : MonoBehaviour {
 		laptopBorder.SetActive (!b);
 		frameText.SetActive (!b);
 		instructionsText.SetActive (b);
-		/*if (!b && anim1 != null) {
-			mainMarkerCanvas.GetComponent<Canvas> ().enabled = false;
-			for (int i = 1;i < Models.Length;i++) {
-				Models[i].GetComponent<Renderer> ().enabled = false;
-			}
-			if(anim1.GetBool("testOn")){
-				testController.scores [touchController.menuOn] = -1;
-			}
-			if (touchController.menuOn != 0) {
-				testController.undim ();
-			}
-			touchController.menuOn = 0;
-			touchController.FirstMenu = true;
-			anim1.SetBool("testOn", false);
-			anim1.SetBool ("panelRight", true);
-			anim2.SetBool ("instructionsUp", false);
-			buttonControl.bringFirstMenu ();
-			smallMenuOcc.SetActive (false);
-			largeMenuOcc.SetActive (false);
-		}*/
+
 	}
 
 
-	// Update is called once per frame
 
 	void Update () {
+		if (occludeCounter < 60) {
+			occludeCounter++;
+		} else if (occludeCounter == 60) {
+			fullOccluderBegin.SetActive (false);
+
+		}
 
 
 		if (Input.GetKeyDown("f")){
-		particlesystem.Play ();
-		particlesystem1.Play ();
-		particlesystem2.Play ();
-		particlesystem3.Play ();
-		particlesystem4.Play ();
-		congrats.SetActive (true);
-		close.SetActive (true);
-			anim1.SetBool ("panelRight", true);
-			anim2.SetBool ("instructionsUp", false);
-			testController.undim ();
-			touchController.menuOn = 0;
-			smallMenuOcc.SetActive (false);
+			Fireworks ();
 	}
+		if (Input.GetKeyDown ("g")) {
+				testController.hdScore = 7;
+				testController.cdScore = 8;
+				testController.ramScore = 9;
+				//testController.batteryScore = 8;
+				testController.wifiScore = 9;
+				testController.fanScore = 10;
+		}
+			
 
 
 		if ((touchController.menuOn != lastMenuOn) && (lastMenuOn  != 0) && (!anim1.GetBool ("testOn"))) {
 			mainMarkerCanvas.GetComponent<Canvas> ().enabled = false;
+			anim1.SetBool ("panelSmall", false);
 			if (!touchController.FirstMenu) {
 				buttonControl.bringFirstMenu ();
 			}
