@@ -106,7 +106,7 @@ public class StringPool : MonoBehaviour
 			{ "a. Battery", "a. Damaged components", "a. Copper", "a. True" },
 			{ "a. To access data from external sources", "a. 0-100ºC",  "a. Read Needle", "a. True" },
 			{ "a. To quickly access information for open applications", "a. The hard drive will share the burden of storage, slowing the process", "a. Virtual Memory", "a. True" },
-			{ "a. To cmmunicate beteen the RAM and the hard drive", "a. The Wi-Fi Adaptor can both store and retrieve data", "a. Gigaflops per seconds", "a. True" }
+			{ "a. To communicate beteen the RAM and the hard drive", "a. The Wi-Fi Adaptor can both store and retrieve data", "a. Gigaflops per seconds", "a. True" }
 		},
 		{{ "How did you get here?", "-", "-","" },
 			{ "b. Supply power to the laptop", "b. Every other month" , "b. Lithium Titanate", "b. False" },
@@ -114,7 +114,7 @@ public class StringPool : MonoBehaviour
 			{ "b. RAM", "b. Reduced lifespan", "b. Aluminium", "b. False" },
 			{ "b. To provide large, stable memory storage", "b. 15-30ºC", "b. Stylus", "b. False" },
 			{ "b. To store large chunks of data", "b. The computer will be unable to connect to the internet", "b. Multiplexing", "b. False" },
-			{ "b. Regulate power usage for laptop components ", "b. The adaptor is able to use the 2.4 GHz and 5.0 GHZ bandwiths", "b. Gigahertz per millisecond", "b. False" }
+			{ "b. Regulate power usage for laptop components ", "b. The adaptor can use the 2.4 GHz and 5.0 GHZ bandwiths", "b. Gigahertz per millisecond", "b. False" }
 		},
 		{{ "How did you get here?", "-", "-","" },
 			{ "c. Connect the laptop to the internet", "c. Every 5 years", "c. Lithium Ion", "" },

@@ -24,6 +24,7 @@ public class ButtonControl : MonoBehaviour
 	public GameObject preparationSteps;
 	public int testCounter;
 	public TouchController touchController;
+	public bool optionsToggle;
 
 	public void removeFirstMenu () {//called when the assessment button is pressed - gets rid of all buttons on screen and brings up the right arrow
 		about.SetActive (false); 
@@ -65,9 +66,10 @@ public class ButtonControl : MonoBehaviour
 	
 	}
 
-	public void optionsMenuOn (bool b) { //toggles the options menu
-		optionsPanel.SetActive (b);
-		menuOccluder.SetActive(b);
+	public void optionsMenuOn () { //toggles the options menu
+		optionsToggle = ! optionsToggle;
+		optionsPanel.SetActive (optionsToggle);
+		menuOccluder.SetActive(optionsToggle);
 		if (preparationSteps.activeInHierarchy == true) {
 			uiController.screwOn();
 		}

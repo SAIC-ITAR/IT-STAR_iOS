@@ -57,7 +57,7 @@ public class UIController : MonoBehaviour {
 	public GameObject exitCheck;
 	public GameObject menuOccluder;
 	public GameObject fullOccluderBegin;
-
+	public bool prepStepsBool;
 
 	// Use this for initialization
 	void Start () {
@@ -115,7 +115,11 @@ public class UIController : MonoBehaviour {
 	public void QuitQuestionOn(){
 		if (buttonControl.userGuidePanel.activeSelf) {
 			buttonControl.userGuideOn (false);
-		} else {
+		} 
+		else if (prepStepsBool){
+			screwOn ();
+		}
+		else {
 			exitCheck.SetActive (true);
 			fullOccluder.SetActive (true);
 			menuOccluder.SetActive (true);
@@ -238,6 +242,7 @@ public class UIController : MonoBehaviour {
 
 	public void Back(){
 		testController.wrongFlag = false;
+		testController.correctFlag = false;
 		if (fireworksBool == true) {
 		Fireworks ();
 		}
@@ -366,6 +371,7 @@ public class UIController : MonoBehaviour {
 
 
 	public void screwOn () {
+		prepStepsBool = !prepStepsBool;
 		occluderOn = !occluderOn;
 		fullOccluder.SetActive (occluderOn);
 		if (touchController.menuOn == 0){

@@ -13,6 +13,27 @@ public class Counter : MonoBehaviour
 	// Update is called once per frame
 	void Update ()
 	{
+
+
+		//get touch input
+		Touch myTouch;
+
+		//Touch[] myTouches = Input.touches;
+
+		for (int i = 0; i < Input.touchCount; i++) {
+			myTouch = Input.GetTouch (i);
+			if (myTouch.phase == TouchPhase.Began) {
+				Ray ray = Camera.main.ScreenPointToRay (myTouch.position);
+				RaycastHit hit;
+				Physics.Raycast (ray, out hit);
+
+				if (hit.rigidbody.gameObject.name == "SkipFrame") {
+					waitTime = -1;
+
+				}
+			}
+		}
+
 		waitTime -= 1;
 
 		if (waitTime <= 0){

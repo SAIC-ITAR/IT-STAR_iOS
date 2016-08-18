@@ -39,6 +39,7 @@ public class TestController : MonoBehaviour
 	public TouchController touchController;
 	public bool moved;
 	public bool wrongFlag;
+	public bool correctFlag;
 
 
 	void Awake () {
@@ -185,7 +186,7 @@ public class TestController : MonoBehaviour
 						question.text = "Correct.";
 					audioplay=GameObject.Find("New Test Holder").GetComponent<AudioSource>();
 					audioplay.PlayOneShot(correct);
-			
+
 					} else {
 						question.color = Color.red;//display a incorrrect message and the correct answer in red
 						question.text = "Incorrect. The correct answer is:\n" + StringPool.TFacts [StringPool.TAnswers [modelNum, qNumber], modelNum, qNumber];
@@ -210,7 +211,6 @@ public class TestController : MonoBehaviour
 							wrongFlag = true;
 							audioplay = GameObject.Find ("New Test Holder").GetComponent<AudioSource> ();
 							audioplay.PlayOneShot (wrong);
-							Debug.Log ("play wrong");
 						}
 
 						
@@ -218,8 +218,12 @@ public class TestController : MonoBehaviour
 
 					}
 					if (allcorrect == true) {
-						audioplay = GameObject.Find ("New Test Holder").GetComponent<AudioSource> ();
-						audioplay.PlayOneShot (pass);
+						if (correctFlag == false) {
+							correctFlag = true;
+							audioplay = GameObject.Find ("New Test Holder").GetComponent<AudioSource> ();
+							audioplay.PlayOneShot (pass);
+							Debug.Log ("play correct 2");
+						}
 					}
 				}
 				qNumber++;
